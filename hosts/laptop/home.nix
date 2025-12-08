@@ -3,15 +3,16 @@
 {
   home.username = "moota";
   home.homeDirectory = "/home/moota";
-  home.stateVersion = "25.11";
+
+  # Don't use a future version here – match your system, e.g. "24.11"
+  home.stateVersion = "24.11";
 
   programs.home-manager.enable = true;
 
   programs.git.enable = true;
 
-  programs.zsh = {
-    enable = true;
-  };
+  programs.zsh.enable = true;
+
   programs.kitty = {
     enable = true;
 
@@ -21,25 +22,30 @@
       size = 11;
     };
 
-    # Direct translation of your kitty.conf settings
+    # Kitty options that map directly to settings
     settings = {
-      window_padding_width  = "6";
-      cursor_shape          = "block";
-      cursor_blink_interval = "0.6";
-      enable_audio_bell     = "no";
-      scrollback_lines      = "10000";
-      allow_remote_control  = "yes";
+      window_padding_width    = "6";
+      cursor_shape            = "block";
+      cursor_blink_interval   = "0.6";
+      enable_audio_bell       = "no";
+      scrollback_lines        = "10000";
+      allow_remote_control    = "yes";
       confirm_os_window_close = "0";
-      extraConfig = ''
-        include Argonaut.conf
-
-        map ctrl+left  send_text all \x1b[1;5D
-        map ctrl+right send_text all \x1b[1;5C
-        map alt+left   send_text all \x1b[1;3D
-        map alt+right  send_text all \x1b[1;3C
-      '';
     };
-    xdg.configFile."kitty/Argonaut.conf".text = ''
+
+    # Extra raw config (this was wrongly inside `settings` before)
+    extraConfig = ''
+      include Argonaut.conf
+
+      map ctrl+left  send_text all \x1b[1;5D
+      map ctrl+right send_text all \x1b[1;5C
+      map alt+left   send_text all \x1b[1;3D
+      map alt+right  send_text all \x1b[1;3C
+    '';
+  };
+
+  # These must be TOP-LEVEL, not inside programs.kitty
+  xdg.configFile."kitty/Argonaut.conf".text = ''
     background            #0d0f18
     foreground            #fffaf3
     cursor                #ff0017
@@ -86,6 +92,4 @@
     color15               #1c1c1c
     selection_foreground  #fcf4dc
   '';
-  };
-
 }

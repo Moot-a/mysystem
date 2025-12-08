@@ -1,9 +1,5 @@
 { config, pkgs, ... }:
 
-let
-    pkgsStable = import <stable> { inherit (pkgs) system; };
-in
-
 {
   imports = 
     [ 
@@ -14,6 +10,16 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   
   services.getty.autologinUser = "moota";
+
+  nixpkgs.overlays = [ (final: prev: {
+    inherit (prev.lixPackageSets.stable)
+      nixpkgs-review
+      nix-eval-jobs
+      nix-fast-build
+      colmena;
+  }) ];
+
+  nix.package = pkgs.lixPackageSets.stable.lix;
 
   networking.hostName = "moota"; # Define your hostname.
   networking.networkmanager.enable = true;
@@ -153,10 +159,18 @@ in
   programs.zsh = {
 	  enable = true;
 	  enableCompletion = true;
-
+      shellAliases = {
+        ns = "sudo nixos-rebuild switch --flake /home/moota/mysystem";
+      };
 	  promptInit = ''
 		  eval "$(starship init zsh)"
 		  '';
+  };
+
+  programs.firefox = {
+    enable = true;
+    package = pkgs.firefox; # or pkgs.firefox-esr if you want ESR
+    nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
   };
 
   environment.systemPackages = with pkgs; [
@@ -171,6 +185,8 @@ in
     waybar
     wget
     hyprpaper
+    nil
+    firefoxpwa
 ];
 
   system.stateVersion = "24.11"; # Did you read the comment?
