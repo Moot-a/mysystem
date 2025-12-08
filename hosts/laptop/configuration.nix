@@ -6,6 +6,12 @@
       ./hardware-configuration.nix 
     ];
 
+  nix.gc.automatic = true;
+  nix.gc.dates = "weekly";
+  nix.gc.options = "--delete-older-than 14d";
+
+  boot.loader.systemd-boot.configurationLimit = 5;
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   
@@ -123,6 +129,10 @@
     xwayland.enable = true;
   };
 
+  environment.sessionVariables = {
+  MOZ_ENABLE_WAYLAND = "0";
+  };
+
   services.dbus.enable = true;
   security.polkit.enable = true;
 
@@ -169,7 +179,7 @@
 
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox; # or pkgs.firefox-esr if you want ESR
+    package = pkgs.firefox;
     nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
   };
 
