@@ -13,6 +13,8 @@
 
   programs.zsh.enable = true;
 
+  home-manager.backupFileExtension = "backup";
+
   programs.kitty = {
     enable = true;
 
