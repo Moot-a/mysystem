@@ -10,7 +10,7 @@
     };
   };
 
-    outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, ... }:
   let
     system = "x86_64-linux";
   in {
@@ -18,7 +18,6 @@
       # 💻 Laptop
       moota-laptop = nixpkgs.lib.nixosSystem {
         inherit system;
-        home-manager.backupFileExtension = "backup";
         modules = [
           ./hosts/laptop/configuration.nix
           ./hosts/laptop/hardware-configuration.nix
@@ -37,20 +36,20 @@
 
       # 🖥️ Desktop
       moota-desktop = nixpkgs.lib.nixosSystem {
-      inherit system;
-      home-manager.backupFileExtension = "backup";
-      modules = [
-        ./hosts/desktop/configuration.nix
-        ./hosts/desktop/hardware-configuration.nix
+        inherit system;
+        modules = [
+          ./hosts/desktop/configuration.nix
+          ./hosts/desktop/hardware-configuration.nix
 
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "backup";
+          home-manager.nixosModules.home-manager
 
-          home-manager.users.moota = import ./hosts/desktop/home.nix;
-        }
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+
+            home-manager.users.moota = import ./hosts/desktop/home.nix;
+          }
         ];
       };
     };

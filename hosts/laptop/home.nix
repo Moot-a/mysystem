@@ -13,8 +13,6 @@
 
   programs.zsh.enable = true;
 
-  home-manager.backupFileExtension = "backup";
-
   programs.kitty = {
     enable = true;
 
@@ -36,7 +34,7 @@
     };
 
     # Extra raw config (this was wrongly inside `settings` before)
-    extraConfig = ''
+    initContent = ''
       include Argonaut.conf
 
       map ctrl+left  send_text all \x1b[1;5D

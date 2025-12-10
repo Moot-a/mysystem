@@ -6,7 +6,7 @@
   # keep whatever is already there, and add:
   programs.zsh = {
     enable = true;
-    initExtra = ''
+    initContent = ''
       alias ns="sudo nixos-rebuild switch --flake ~/mysystem#moota-desktop"
     '';
   };
