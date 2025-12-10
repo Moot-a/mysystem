@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{  config,  lib,  pkgs,  ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -351,6 +346,7 @@
     gitkraken
     bluez
     pywal
+    marksman
   ];
 
   programs.mtr.enable = true;
@@ -358,8 +354,6 @@
     enable = true;
     enableSSHSupport = true;
   };
-
-  system.copySystemConfiguration = true;
 
   system.stateVersion = "24.05";
 
