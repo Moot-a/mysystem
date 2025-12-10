@@ -18,6 +18,7 @@
       # 💻 Laptop
       moota-laptop = nixpkgs.lib.nixosSystem {
         inherit system;
+        home-manager.backupFileExtension = "backup";
         modules = [
           ./hosts/laptop/configuration.nix
           ./hosts/laptop/hardware-configuration.nix
@@ -37,12 +38,12 @@
       # 🖥️ Desktop
       moota-desktop = nixpkgs.lib.nixosSystem {
       inherit system;
+      home-manager.backupFileExtension = "backup";
       modules = [
         ./hosts/desktop/configuration.nix
         ./hosts/desktop/hardware-configuration.nix
 
         home-manager.nixosModules.home-manager
-
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
