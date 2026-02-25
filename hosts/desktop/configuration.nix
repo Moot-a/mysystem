@@ -4,12 +4,15 @@
     ./hardware-configuration.nix
   ];
 
+  xdg.mime.enable = true;
+
   # Bootloader
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "nodev";
   boot.loader.grub.efiSupport = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.useOSProber = true;
+  boot.supportedFilesystems = [ "ntfs" ];
 
   # Networking
   networking.hostName = "moota";
@@ -88,7 +91,7 @@
     };
 
     "/DataBig" = {
-      device = "/dev/disk/by-uuid/08D4337FD4336E56";
+      device = "/dev/disk/by-partuuid/e6f3cfd8-a797-4c61-be3c-a8f154ff1286";
       fsType = "ntfs3";
       options = [
         "uid=1000"
@@ -126,7 +129,7 @@
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.wayland.enable = true;
   services.xserver.displayManager.setupCommands = ''
-    ${pkgs.xorg.xrandr}/bin/xrandr --output HDMI-A-1 --rotate left
+    ${pkgs.xrandr}/bin/xrandr --output HDMI-A-1 --rotate left
   '';
 
   # Hyprland
@@ -257,7 +260,14 @@
     options binder_linux devices=binder,hwbinder,vndbinder
   '';
 
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true; # optional but nice
+  };
+
   programs.appimage.enable = true;
+
+  security.polkit.enable = true;
 
   services.suwayomi-server = {
     enable = true;
@@ -280,7 +290,7 @@
     gnumake
     clang
     vlc
-    youtube-music
+    pear-music
     inkscape
     lutris
     prismlauncher
@@ -322,7 +332,7 @@
     wofi
     waybar
     font-awesome
-    nixfmt-rfc-style
+    nixfmt
     hyprshot
     hyprpaper
     mako
@@ -347,7 +357,16 @@
     bluez
     pywal
     marksman
+    sc-controller
+    nil
+    distrobox
+    godot
+    peazip
+    cacert
+    krita
   ];
+
+  environment.sessionVariables.SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
 
   programs.mtr.enable = true;
   programs.gnupg.agent = {
