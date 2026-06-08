@@ -34,7 +34,7 @@
     };
 
     # Extra raw config (this was wrongly inside `settings` before)
-    initContent = ''
+    extraConfig = ''
       include Argonaut.conf
 
       map ctrl+left  send_text all \x1b[1;5D
